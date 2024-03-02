@@ -1,8 +1,26 @@
 package main
 
-import "search/pkg"
+import (
+	"fmt"
+	"log"
+	"os"
+	"path/filepath"
+	"search/pkg"
+)
 
 func main() {
-	filePaths := []string{"file1.txt", "file2.txt", "file3.txt"}
-	pkg.Search(filePaths, "keyword")
+
+	gopath := os.Getenv("GOPATH")
+
+	examplePath := filepath.Join(gopath, "src/examples/")
+
+	files, err := filepath.Glob(filepath.Join(examplePath, "*.txt"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	pkg.Search(files, "привет", err)
+
+	fmt.Println("GOPATH:", gopath)
+	fmt.Println("GOPATH dddd:", examplePath)
 }

@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"bufio"
+	"log"
 	"os"
 	"strings"
 )
@@ -11,7 +12,7 @@ import (
 //	Error string   `json:"error"`
 //}
 
-func Search(filePaths []string, keyword string) {
+func Search(filePaths []string, keyword string, err error) {
 	for _, filePath := range filePaths {
 		file, err := os.Open(filePath)
 		if err != nil {
@@ -37,5 +38,7 @@ func Search(filePaths []string, keyword string) {
 			println("Неудалось прочитать", err)
 		}
 	}
-
+	if err != nil {
+		log.Fatal(err)
+	}
 }
