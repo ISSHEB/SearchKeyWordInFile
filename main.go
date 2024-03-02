@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"search/pkg"
 )
@@ -14,5 +13,22 @@ func main() {
 	}
 	pkg.Search(filePaths, "Хороши")
 
-	fmt.Print("filePaths", filePaths)
+	//searchFlag := flag.String("search", "", "Keyword to search for")
+	//filePathArg := flag.String("file", "", "File to search in")
+	//
+	//flag.Parse()
+	//
+	//if *searchFlag == "" {
+	//	fmt.Println("Please provide a keyword using the -search flag")
+	//	os.Exit(1)
+	//}
+	//
+	//if *filePathArg == "" {
+	//	fmt.Println("Please provide a file path using the -file flag")
+	//	os.Exit(1)
+	//}
+	//
+	//filePaths := []string{*filePathArg}
+	//Search(filePaths, *searchFlag)
+
 }

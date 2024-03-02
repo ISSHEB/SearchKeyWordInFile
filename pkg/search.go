@@ -7,11 +7,6 @@ import (
 	"strings"
 )
 
-//type Searcher struct {
-//	Files []string `json:"files"`
-//	Error string   `json:"error"`
-//}
-
 func GetFilePaths(root string) ([]string, error) {
 	var filePaths []string
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
