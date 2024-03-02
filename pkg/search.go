@@ -2,8 +2,8 @@ package pkg
 
 import (
 	"bufio"
-	"log"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -12,7 +12,24 @@ import (
 //	Error string   `json:"error"`
 //}
 
-func Search(filePaths []string, keyword string, err error) {
+func GetFilePaths(root string) ([]string, error) {
+	var filePaths []string
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() {
+			filePaths = append(filePaths, path)
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return filePaths, nil
+}
+
+func Search(filePaths []string, keyword string) {
 	for _, filePath := range filePaths {
 		file, err := os.Open(filePath)
 		if err != nil {
@@ -29,16 +46,17 @@ func Search(filePaths []string, keyword string, err error) {
 			line := scanner.Text()
 			if strings.Contains(line, keyword) {
 				println("нашли слово в этом файле:", filePath)
-			}
-			if found {
+				found = true
 				break
 			}
+
 		}
 		if err := scanner.Err(); err != nil {
 			println("Неудалось прочитать", err)
 		}
+		if !found {
+			println("не найдено")
+		}
 	}
-	if err != nil {
-		log.Fatal(err)
-	}
+
 }
