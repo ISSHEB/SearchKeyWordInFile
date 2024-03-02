@@ -41,6 +41,7 @@ func Search(filePaths []string, keyword string) (filepath []string) {
 			line := scanner.Text()
 			if strings.Contains(line, keyword) {
 				println("нашли слово в этом файле:", filePath)
+				filepath = append(filepath, filePath)
 				found = true
 				break
 			}

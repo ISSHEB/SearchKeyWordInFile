@@ -14,14 +14,14 @@ func main() {
 	router.GET("/search/:keyword", func(c *gin.Context) {
 		keyword := c.Param("keyword")
 		if keyword == "" {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Нет ключего слова"})
+			c.JSON(http.StatusBadRequest, gin.H{"Ошибка": "Нет ключего слова"})
 			return
 		}
 
 		filePaths, err := pkg.GetFilePaths("examples")
 		if err != nil {
-			log.Println("Error searching files:", err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+			log.Println("Ошибка поиска файлов:", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Внутренняя ошибка сервера"})
 			return
 		}
 
@@ -30,7 +30,7 @@ func main() {
 		data, err := json.Marshal(jsonData)
 		if err != nil {
 			log.Println("Error marshaling JSON:", err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Внутренняя ошибка сервера"})
 			return
 		}
 
