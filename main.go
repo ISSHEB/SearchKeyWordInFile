@@ -1,34 +1,41 @@
 package main
 
 import (
+	"encoding/json"
+	"github.com/gin-gonic/gin"
 	"log"
+	"net/http"
 	"search/pkg"
 )
 
 func main() {
+	router := gin.Default()
 
-	filePaths, err := pkg.GetFilePaths("examples")
-	if err != nil {
-		log.Fatal(err)
-	}
-	pkg.Search(filePaths, "Хороши")
+	router.GET("/search/:keyword", func(c *gin.Context) {
+		keyword := c.Param("keyword")
+		if keyword == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Нет ключего слова"})
+			return
+		}
 
-	//searchFlag := flag.String("search", "", "Keyword to search for")
-	//filePathArg := flag.String("file", "", "File to search in")
-	//
-	//flag.Parse()
-	//
-	//if *searchFlag == "" {
-	//	fmt.Println("Please provide a keyword using the -search flag")
-	//	os.Exit(1)
-	//}
-	//
-	//if *filePathArg == "" {
-	//	fmt.Println("Please provide a file path using the -file flag")
-	//	os.Exit(1)
-	//}
-	//
-	//filePaths := []string{*filePathArg}
-	//Search(filePaths, *searchFlag)
+		filePaths, err := pkg.GetFilePaths("examples")
+		if err != nil {
+			log.Println("Error searching files:", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+			return
+		}
 
+		jsonData := pkg.Search(filePaths, keyword)
+
+		data, err := json.Marshal(jsonData)
+		if err != nil {
+			log.Println("Error marshaling JSON:", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"data": string(data)})
+	})
+
+	router.Run(":8080")
 }

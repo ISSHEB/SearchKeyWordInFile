@@ -24,7 +24,7 @@ func GetFilePaths(root string) ([]string, error) {
 	return filePaths, nil
 }
 
-func Search(filePaths []string, keyword string) {
+func Search(filePaths []string, keyword string) (filepath []string) {
 	for _, filePath := range filePaths {
 		file, err := os.Open(filePath)
 		if err != nil {
@@ -53,5 +53,5 @@ func Search(filePaths []string, keyword string) {
 			println("не найдено")
 		}
 	}
-
+	return filepath
 }
