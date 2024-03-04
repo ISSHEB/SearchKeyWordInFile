@@ -25,12 +25,14 @@ func GetFilePaths(root string) ([]string, error) {
 	return filePaths, nil
 }
 
-func Search(filePaths []string, keyword string) (filepath []string) {
+func Search(filePaths []string, keyword string) []string {
 	keyword = strings.ToLower(keyword)
+	var foundFilePaths []string
+
 	for _, filePath := range filePaths {
 		file, err := os.Open(filePath)
 		if err != nil {
-			fmt.Println("файл не открываеться", err)
+			fmt.Println("Не удалось открыть файл:", err)
 			continue
 		}
 		defer file.Close()
@@ -42,18 +44,18 @@ func Search(filePaths []string, keyword string) (filepath []string) {
 		for scanner.Scan() {
 			line := strings.ToLower(scanner.Text())
 			if strings.Contains(line, keyword) {
-				fmt.Println("нашли слово в этом файле:", filePath)
-				filepath = append(filepath, filePath)
+				fmt.Println("Нашли слово в этом файле:", filePath)
+				foundFilePaths = append(foundFilePaths, filePath)
 				found = true
 				break
 			}
 		}
 		if err := scanner.Err(); err != nil {
-			fmt.Println("Неудалось прочитать", err)
+			fmt.Println("Не удалось прочитать файл:", err)
 		}
 		if !found {
-			fmt.Println("не найдено")
+			fmt.Println("Не найдено")
 		}
 	}
-	return filepath
+	return foundFilePaths
 }
