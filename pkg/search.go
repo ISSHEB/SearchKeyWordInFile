@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -25,10 +26,11 @@ func GetFilePaths(root string) ([]string, error) {
 }
 
 func Search(filePaths []string, keyword string) (filepath []string) {
+	keyword = strings.ToLower(keyword)
 	for _, filePath := range filePaths {
 		file, err := os.Open(filePath)
 		if err != nil {
-			println("файл не открываеться", err)
+			fmt.Println("файл не открываеться", err)
 			continue
 		}
 		defer file.Close()
@@ -38,20 +40,19 @@ func Search(filePaths []string, keyword string) (filepath []string) {
 		found := false
 
 		for scanner.Scan() {
-			line := scanner.Text()
+			line := strings.ToLower(scanner.Text())
 			if strings.Contains(line, keyword) {
-				println("нашли слово в этом файле:", filePath)
+				fmt.Println("нашли слово в этом файле:", filePath)
 				filepath = append(filepath, filePath)
 				found = true
 				break
 			}
-
 		}
 		if err := scanner.Err(); err != nil {
-			println("Неудалось прочитать", err)
+			fmt.Println("Неудалось прочитать", err)
 		}
 		if !found {
-			println("не найдено")
+			fmt.Println("не найдено")
 		}
 	}
 	return filepath

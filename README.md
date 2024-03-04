@@ -7,7 +7,11 @@
 <br>
 http://localhost:8080/search/your_keyword
 <br>
-<h2>Пример:</h3>
-http://localhost:8080/search/Хороши
+<h2>Пример:</h2>
+http://localhost:8080/search/хороши
 <br>
-http://localhost:8080/search/Телефон
+http://localhost:8080/search/телефон
+<br>
+<br>
+
+<h4>вводить слово можно и с большой буквы и маленькой буквы(без учета регистра)</h4>
